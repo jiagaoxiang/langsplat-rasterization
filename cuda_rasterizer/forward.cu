@@ -334,6 +334,12 @@ renderCUDA(
             #pragma unroll
             for (int ch = 0; ch < CHANNELS; ++ch)
                 C[ch] = __fmaf_rn(s_feat[j*CHANNELS+ch], alpha*T, C[ch]);
+
+            if (include_feature)
+            {
+                for (int ch = 0; ch < CHANNELS_language_feature; ch++)
+                    F[ch] += language_feature[s_id[j] * CHANNELS_language_feature + ch] * alpha * T;
+            }
             T = new_T;
             last_contributor = contributor;
         }
@@ -346,6 +352,12 @@ renderCUDA(
         #pragma unroll
         for (int ch = 0; ch < CHANNELS; ++ch)
             ((volatile float*)out_color)[ch*H*W + pix_id] = C[ch] + T*bg_val[ch];
+		
+		if (include_feature)
+        {
+            for (int ch = 0; ch < CHANNELS_language_feature; ch++)
+                out_language_feature[ch * H * W + pix_id] = F[ch];
+        }
     }
 
 }
