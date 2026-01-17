@@ -266,11 +266,14 @@ renderCUDA(
     int W, int H,
     const float2* __restrict__ points_xy_image,
     const float* __restrict__ features,
+    const float* __restrict__ language_feature,
     const float4* __restrict__ conic_opacity,
     float* __restrict__ final_T,
     uint32_t* __restrict__ n_contrib,
     const float* __restrict__ bg_color,
-    float* __restrict__ out_color)
+    float* __restrict__ out_color,
+    float* __restrict__ out_language_feature,
+    bool include_feature)
 {
     int bx = blockIdx.x, by = blockIdx.y;
     int tx = threadIdx.x, ty = threadIdx.y;
@@ -289,6 +292,7 @@ renderCUDA(
     float T = 1.0f;
     uint32_t contributor = 0, last_contributor = 0;
     float C[CHANNELS] = {0.0f};
+    float F[CHANNELS_language_feature] = {0.0f};
     bool done = !inside;
 
     // Cache background color per thread
