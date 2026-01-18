@@ -1,5 +1,9 @@
 # langsplat-rasterization
 
+## This is the AMD ROCm version for LangSplat-Rasterization.
+
+## Below is the READ.me file of the original version:
+
 Used as the rasterization engine for the paper "LangSplat: 3D Language Gaussian Splatting " (Arxiv 2024). 
 Learn more at [Langsplat](https://github.com/minghanqin/LangSplat).
 
